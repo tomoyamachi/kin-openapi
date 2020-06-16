@@ -264,7 +264,7 @@ func join(basePath *url.URL, relativePath *url.URL) (*url.URL, error) {
 	if err != nil {
 		return nil, fmt.Errorf("cannot copy path: %q", basePath.String())
 	}
-	newPath.Path = path.Dir(newPath.Path) + "/" + relativePath.Path
+	newPath.Path = filepath.FromSlash(path.Join(path.Dir(filepath.FromSlash(newPath.Path)), relativePath.Path))
 	return newPath, nil
 }
 
@@ -904,7 +904,7 @@ func unescapeRefString(ref string) string {
 func referencedDocumentPath(documentPath *url.URL, ref string) (*url.URL, error) {
 	newDocumentPath := documentPath
 	if documentPath != nil {
-		refDirectory, err := url.Parse(path.Dir(ref))
+		refDirectory, err := url.Parse(path.Dir(filepath.FromSlash(ref)))
 		if err != nil {
 			return nil, err
 		}
