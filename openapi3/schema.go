@@ -19,7 +19,7 @@ var (
 	// SchemaErrorDetailsDisabled disables printing of details about schema errors.
 	SchemaErrorDetailsDisabled = false
 
-	//SchemaFormatValidationDisabled disables validation of schema type formats.
+	// SchemaFormatValidationDisabled disables validation of schema type formats.
 	SchemaFormatValidationDisabled = false
 
 	errSchema = errors.New("Input does not match the schema")
@@ -56,7 +56,7 @@ type Schema struct {
 	AnyOf        []*SchemaRef  `json:"anyOf,omitempty" yaml:"anyOf,omitempty"`
 	AllOf        []*SchemaRef  `json:"allOf,omitempty" yaml:"allOf,omitempty"`
 	Not          *SchemaRef    `json:"not,omitempty" yaml:"not,omitempty"`
-	Type         string        `json:"type,omitempty" yaml:"type,omitempty"`
+	Type         interface{}   `json:"type,omitempty" yaml:"type,omitempty"`
 	Title        string        `json:"title,omitempty" yaml:"title,omitempty"`
 	Format       string        `json:"format,omitempty" yaml:"format,omitempty"`
 	Description  string        `json:"description,omitempty" yaml:"description,omitempty"`
@@ -1127,7 +1127,7 @@ func (schema *Schema) expectedType(typ string, fast bool) error {
 		Value:       typ,
 		Schema:      schema,
 		SchemaField: "type",
-		Reason:      "Field must be set to " + schema.Type + " or not be present",
+		Reason:      fmt.Sprintf("Field must be set to %s or not be present", schema.Type),
 	}
 }
 
